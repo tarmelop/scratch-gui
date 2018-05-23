@@ -15,7 +15,7 @@ const motion = function (isStage, targetId) {
                 </shadow>
             </value>
         </block>
-        <block type="motion_turnright">
+        <!--<block type="motion_turnright">
             <value name="DEGREES">
                 <shadow type="math_number">
                     <field name="NUM">15</field>
@@ -76,7 +76,7 @@ const motion = function (isStage, targetId) {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}
+        ${blockSeparator}-->
         <block type="motion_pointindirection">
             <value name="DIRECTION">
                 <shadow type="math_angle">
@@ -84,7 +84,7 @@ const motion = function (isStage, targetId) {
                 </shadow>
             </value>
         </block>
-        <block type="motion_pointtowards">
+        <!--<block type="motion_pointtowards">
             <value name="TOWARDS">
                 <shadow type="motion_pointtowards_menu">
                 </shadow>
@@ -119,14 +119,14 @@ const motion = function (isStage, targetId) {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}
+        ${blockSeparator}-->
         <block type="motion_ifonedgebounce"/>
         ${blockSeparator}
-        <block type="motion_setrotationstyle"/>
+        <!--<block type="motion_setrotationstyle"/>
         ${blockSeparator}
         <block id="${targetId}_xposition" type="motion_xposition"/>
         <block id="${targetId}_yposition" type="motion_yposition"/>
-        <block id="${targetId}_direction" type="motion_direction"/>`}
+        <block id="${targetId}_direction" type="motion_direction"/>-->`}
         ${categorySeparator}
     </category>
     `;
@@ -136,7 +136,7 @@ const looks = function (isStage, targetId) {
     return `
     <category name="Looks" id="looks" colour="#9966FF" secondaryColour="#774DCB">
         ${isStage ? '' : `
-        <block type="looks_sayforsecs">
+        <!--<block type="looks_sayforsecs">
             <value name="MESSAGE">
                 <shadow type="text">
                     <field name="TEXT">Hello!</field>
@@ -174,7 +174,7 @@ const looks = function (isStage, targetId) {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}
+        ${blockSeparator}-->
         `}
         ${isStage ? `
             <block type="looks_switchbackdropto">
@@ -182,11 +182,11 @@ const looks = function (isStage, targetId) {
                     <shadow type="looks_backdrops"/>
                 </value>
             </block>
-            <block type="looks_switchbackdroptoandwait">
+            <!--<block type="looks_switchbackdroptoandwait">
                 <value name="BACKDROP">
                     <shadow type="looks_backdrops"/>
                 </value>
-            </block>
+            </block>-->
             <block type="looks_nextbackdrop"/>
         ` : `
             <block id="${targetId}_switchcostumeto" type="looks_switchcostumeto">
@@ -195,7 +195,7 @@ const looks = function (isStage, targetId) {
                 </value>
             </block>
             <block type="looks_nextcostume"/>
-            <block type="looks_switchbackdropto">
+            <!--<block type="looks_switchbackdropto">
                 <value name="BACKDROP">
                     <shadow type="looks_backdrops"/>
                 </value>
@@ -215,9 +215,9 @@ const looks = function (isStage, targetId) {
                         <field name="NUM">100</field>
                     </shadow>
                 </value>
-            </block>
+            </block>-->
         `}
-        ${blockSeparator}
+        <!--${blockSeparator}
         <block type="looks_changeeffectby">
             <value name="CHANGE">
                 <shadow type="math_number">
@@ -233,11 +233,11 @@ const looks = function (isStage, targetId) {
             </value>
         </block>
         <block type="looks_cleargraphiceffects"/>
-        ${blockSeparator}
+        ${blockSeparator}-->
         ${isStage ? '' : `
             <block type="looks_show"/>
             <block type="looks_hide"/>
-        ${blockSeparator}
+        <!--${blockSeparator}
             <block type="looks_gotofrontback"/>
             <block type="looks_goforwardbackwardlayers">
                 <value name="NUM">
@@ -245,14 +245,14 @@ const looks = function (isStage, targetId) {
                         <field name="NUM">1</field>
                     </shadow>
                 </value>
-            </block>
+            </block>-->
         `}
         ${isStage ? `
-            <block id="backdropnumbername" type="looks_backdropnumbername"/>
+            <!--<block id="backdropnumbername" type="looks_backdropnumbername"/>-->
         ` : `
-            <block id="${targetId}_costumenumbername" type="looks_costumenumbername"/>
+            <!--<block id="${targetId}_costumenumbername" type="looks_costumenumbername"/>
             <block id="backdropnumbername" type="looks_backdropnumbername"/>
-            <block id="${targetId}_size" type="looks_size"/>
+            <block id="${targetId}_size" type="looks_size"/>-->
         `}
         ${categorySeparator}
     </category>
@@ -272,7 +272,7 @@ const sound = function (isStage, targetId) {
                 <shadow type="sound_sounds_menu"/>
             </value>
         </block>
-        <block type="sound_stopallsounds"/>
+        <!--<block type="sound_stopallsounds"/>
         ${blockSeparator}
         <block type="sound_changeeffectby">
             <value name="VALUE">
@@ -304,7 +304,7 @@ const sound = function (isStage, targetId) {
                 </shadow>
             </value>
         </block>
-        <block id="volume" type="sound_volume"/>
+        <block id="volume" type="sound_volume"/>-->
         ${categorySeparator}
     </category>
     `;
@@ -316,7 +316,7 @@ const events = function (isStage) {
         <block type="event_whenflagclicked"/>
         <block type="event_whenkeypressed">
         </block>
-        ${isStage ? `
+        <!--${isStage ? `
             <block type="event_whenstageclicked"/>
         ` : `
             <block type="event_whenthisspriteclicked"/>
@@ -343,7 +343,7 @@ const events = function (isStage) {
             <value name="BROADCAST_INPUT">
               <shadow type="event_broadcast_menu"></shadow>
             </value>
-        </block>
+        </block>-->
         ${categorySeparator}
     </category>
     `;
@@ -360,17 +360,17 @@ const control = function (isStage) {
             </value>
         </block>
         ${blockSeparator}
-        <block type="control_repeat">
+        <!--<block type="control_repeat">
             <value name="TIMES">
                 <shadow type="math_whole_number">
                     <field name="NUM">10</field>
                 </shadow>
             </value>
-        </block>
+        </block>-->
         <block id="forever" type="control_forever"/>
         ${blockSeparator}
         <block type="control_if"/>
-        <block type="control_if_else"/>
+        <!--<block type="control_if_else"/>
         <block id="wait_until" type="control_wait_until"/>
         <block id="repeat_until" type="control_repeat_until"/>
         ${blockSeparator}
@@ -389,7 +389,7 @@ const control = function (isStage) {
                     <shadow type="control_create_clone_of_menu"/>
                 </value>
             </block>
-            <block type="control_delete_this_clone"/>
+            <block type="control_delete_this_clone"/>-->
         `}
         ${categorySeparator}
     </category>
@@ -400,11 +400,11 @@ const sensing = function (isStage) {
     return `
     <category name="Sensing" id="sensing" colour="#4CBFE6" secondaryColour="#2E8EB8">
         ${isStage ? '' : `
-            <block type="sensing_touchingobject">
+            <!--<block type="sensing_touchingobject">
                 <value name="TOUCHINGOBJECTMENU">
                     <shadow type="sensing_touchingobjectmenu"/>
                 </value>
-            </block>
+            </block>-->
             <block type="sensing_touchingcolor">
                 <value name="COLOR">
                     <shadow type="colour_picker"/>
@@ -418,7 +418,7 @@ const sensing = function (isStage) {
                     <shadow type="colour_picker"/>
                 </value>
             </block>
-            <block type="sensing_distanceto">
+            <!--<block type="sensing_distanceto">
                 <value name="DISTANCETOMENU">
                     <shadow type="sensing_distancetomenu"/>
                 </value>
@@ -460,7 +460,7 @@ const sensing = function (isStage) {
         </block>
         ${blockSeparator}
         <block id="current" type="sensing_current"/>
-        <block type="sensing_dayssince2000"/>
+        <block type="sensing_dayssince2000"/>-->
         ${categorySeparator}
     </category>
     `;
@@ -469,7 +469,7 @@ const sensing = function (isStage) {
 const operators = function () {
     return `
     <category name="Operators" id="operators" colour="#40BF4A" secondaryColour="#389438">
-        <block type="operator_add">
+        <!--<block type="operator_add">
             <value name="NUM1">
                 <shadow type="math_number">
                     <field name="NUM"/>
@@ -567,12 +567,12 @@ const operators = function () {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}
+        ${blockSeparator}-->
         <block type="operator_and"/>
         <block type="operator_or"/>
         <block type="operator_not"/>
         ${blockSeparator}
-        <block type="operator_join">
+        <!--<block type="operator_join">
             <value name="STRING1">
                 <shadow type="text">
                     <field name="TEXT">apple</field>
@@ -642,7 +642,7 @@ const operators = function () {
                     <field name="NUM"/>
                 </shadow>
             </value>
-        </block>
+        </block>-->
         ${categorySeparator}
     </category>
     `;
@@ -682,9 +682,9 @@ const makeToolboxXML = function (isStage, targetId, categoriesXML) {
         events(isStage, targetId), gap,
         control(isStage, targetId), gap,
         sensing(isStage, targetId), gap,
-        operators(isStage, targetId), gap,
-        variables(isStage, targetId), gap,
-        myBlocks(isStage, targetId)
+        //operators(isStage, targetId), gap,
+        //variables(isStage, targetId), gap,
+        //myBlocks(isStage, targetId)
     ];
 
     if (categoriesXML) {
