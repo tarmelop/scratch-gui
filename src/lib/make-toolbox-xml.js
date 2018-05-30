@@ -517,7 +517,7 @@ const operators = function () {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}
+        ${blockSeparator}-->
         <block type="operator_random">
             <value name="FROM">
                 <shadow type="math_number">
@@ -530,7 +530,7 @@ const operators = function () {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}
+        <!--${blockSeparator}
         <block type="operator_gt">
             <value name="OPERAND1">
                 <shadow type="text">
@@ -567,12 +567,12 @@ const operators = function () {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}-->
+        ${blockSeparator}
         <block type="operator_and"/>
         <block type="operator_or"/>
         <block type="operator_not"/>
         ${blockSeparator}
-        <!--<block type="operator_join">
+        <block type="operator_join">
             <value name="STRING1">
                 <shadow type="text">
                     <field name="TEXT">apple</field>
@@ -682,7 +682,7 @@ const makeToolboxXML = function (isStage, targetId, categoriesXML) {
         events(isStage, targetId), gap,
         control(isStage, targetId), gap,
         sensing(isStage, targetId), gap,
-        //operators(isStage, targetId), gap,
+        operators(isStage, targetId), gap,
         //variables(isStage, targetId), gap,
         //myBlocks(isStage, targetId)
     ];
