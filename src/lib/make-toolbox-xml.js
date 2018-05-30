@@ -121,9 +121,9 @@ const motion = function (isStage, targetId) {
         </block>
         ${blockSeparator}-->
         <block type="motion_ifonedgebounce"/>
-        ${blockSeparator}
-        <!--<block type="motion_setrotationstyle"/>
-        ${blockSeparator}
+        <!--${blockSeparator}-->
+        <block type="motion_setrotationstyle"/>
+        <!--${blockSeparator}
         <block id="${targetId}_xposition" type="motion_xposition"/>
         <block id="${targetId}_yposition" type="motion_yposition"/>
         <block id="${targetId}_direction" type="motion_direction"/>-->`}
@@ -262,11 +262,11 @@ const looks = function (isStage, targetId) {
 const sound = function (isStage, targetId) {
     return `
     <category name="Sound" id="sound" colour="#D65CD6" secondaryColour="#BD42BD">
-        <block id="${targetId}_sound_play" type="sound_play">
+        <!--<block id="${targetId}_sound_play" type="sound_play">
             <value name="SOUND_MENU">
                 <shadow type="sound_sounds_menu"/>
             </value>
-        </block>
+        </block>-->
         <block id="${targetId}_sound_playuntildone" type="sound_playuntildone">
             <value name="SOUND_MENU">
                 <shadow type="sound_sounds_menu"/>
@@ -410,7 +410,7 @@ const sensing = function (isStage) {
                     <shadow type="colour_picker"/>
                 </value>
             </block>
-            <block type="sensing_coloristouchingcolor">
+            <!--<block type="sensing_coloristouchingcolor">
                 <value name="COLOR">
                     <shadow type="colour_picker"/>
                 </value>
@@ -418,7 +418,7 @@ const sensing = function (isStage) {
                     <shadow type="colour_picker"/>
                 </value>
             </block>
-            <!--<block type="sensing_distanceto">
+            <block type="sensing_distanceto">
                 <value name="DISTANCETOMENU">
                     <shadow type="sensing_distancetomenu"/>
                 </value>
