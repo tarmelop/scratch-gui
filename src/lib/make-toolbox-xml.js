@@ -208,14 +208,14 @@ const looks = function (isStage, targetId) {
                         <field name="NUM">10</field>
                     </shadow>
                 </value>
-            </block>
+            </block>-->
             <block type="looks_setsizeto">
                 <value name="SIZE">
                     <shadow type="math_number">
                         <field name="NUM">100</field>
                     </shadow>
                 </value>
-            </block>-->
+            </block>
         `}
         <!--${blockSeparator}
         <block type="looks_changeeffectby">
@@ -314,9 +314,9 @@ const events = function (isStage) {
     return `
     <category name="Events" id="events" colour="#FFD500" secondaryColour="#CC9900">
         <block type="event_whenflagclicked"/>
-        <block type="event_whenkeypressed">
+        <!--<block type="event_whenkeypressed">
         </block>
-        <!--${isStage ? `
+        ${isStage ? `
             <block type="event_whenstageclicked"/>
         ` : `
             <block type="event_whenthisspriteclicked"/>

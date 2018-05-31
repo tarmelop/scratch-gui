@@ -77,8 +77,25 @@ class SoundLibrary extends React.PureComponent {
         });
     }
     render () {
+
+        //tarmelop hack: filter sound library content   
+        var allSounds = soundLibraryContent;
+        var microworld = false;
+        if (microworld){
+            
+            var microworldSounds = ['A Piano', 'A Sax', 'A Trombone'];
+            var filteredSounds = [];
+            var i;
+            for(i=0; i<allSounds.length; i++){
+                if(microworldSounds.includes(allSounds[i].name)){
+                    filteredSounds.push(allSounds[i]);
+                }
+            }
+            allSounds = filteredSounds;
+        }
+
         // @todo need to use this hack to avoid library using md5 for image
-        const soundLibraryThumbnailData = soundLibraryContent.map(sound => {
+        const soundLibraryThumbnailData = allSounds.map(sound => {
             const {
                 md5,
                 ...otherData

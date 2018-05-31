@@ -78,6 +78,22 @@ class SpriteLibrary extends React.PureComponent {
         });
     }
     render () {
+
+        //tarmelop hack: filter sprite library content   
+        var microworld = false;
+        if (microworld){
+            var allSprites = this.state.sprites;
+            var microworldSprites = ['Apple', 'Ball', 'Beetle'];
+            var filteredSprites = [];
+            var i;
+            for(i=0; i<allSprites.length; i++){
+                if(microworldSprites.includes(allSprites[i].name)){
+                    filteredSprites.push(allSprites[i]);
+                }
+            }
+            this.state.sprites = filteredSprites;
+        }
+
         return (
             <LibraryComponent
                 data={this.state.sprites}
