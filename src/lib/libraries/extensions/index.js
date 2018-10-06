@@ -7,6 +7,7 @@ import wedoImage from './wedo.png';
 import ev3Image from './ev3.png';
 import boostImage from './boost.png';
 import translateImage from './translate.png';
+import synthImage from './synth.png';
 
 export default [
     {
@@ -14,6 +15,13 @@ export default [
         extensionId: 'music',
         iconURL: musicImage,
         description: 'Play instruments and drums.',
+        featured: true
+    },
+    {
+        name: 'Synth',
+        extensionId: 'synth',
+        iconURL: synthImage,
+        description: 'Synthesize sound effects and music.',
         featured: true
     },
     {
