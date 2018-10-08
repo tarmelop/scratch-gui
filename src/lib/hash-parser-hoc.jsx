@@ -24,15 +24,16 @@ const HashParserHOC = function (WrappedComponent) {
             window.removeEventListener('hashchange', this.handleHashChange);
         }
         handleHashChange () {
-            let projectId = window.location.hash.substring(1);
+            const hashMatch = window.location.hash.match(/#(\d+)/);
+            const projectId = hashMatch === null ? 0 : hashMatch[1];
             if (projectId !== this.state.projectId) {
-                if (projectId.length < 1) projectId = 0;
                 this.setState({projectId: projectId});
             }
         }
         render () {
             return (
                 <WrappedComponent
+                    hideIntro={this.state.projectId && this.state.projectId !== 0}
                     projectId={this.state.projectId}
                     {...this.props}
                 />

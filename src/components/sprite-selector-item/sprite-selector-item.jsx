@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import CostumeCanvas from '../costume-canvas/costume-canvas.jsx';
 import CloseButton from '../close-button/close-button.jsx';
 import styles from './sprite-selector-item.css';
 import {ContextMenuTrigger} from 'react-contextmenu';
@@ -38,11 +37,9 @@ const SpriteSelectorItem = props => (
             <div className={styles.number}>{props.number}</div>
         )}
         {props.costumeURL ? (
-            <CostumeCanvas
+            <img
                 className={styles.spriteImage}
-                height={32}
-                url={props.costumeURL}
-                width={32}
+                src={props.costumeURL}
             />
         ) : null}
         <div className={styles.spriteInfo}>
@@ -51,7 +48,7 @@ const SpriteSelectorItem = props => (
                 <div className={styles.spriteDetails}>{props.details}</div>
             ) : null}
         </div>
-        {props.onDuplicateButtonClick || props.onDeleteButtonClick ? (
+        {props.onDuplicateButtonClick || props.onDeleteButtonClick || props.onExportButtonClick ? (
             <ContextMenu id={`${props.name}-${contextMenuId++}`}>
                 {props.onDuplicateButtonClick ? (
                     <MenuItem onClick={props.onDuplicateButtonClick}>
@@ -71,6 +68,15 @@ const SpriteSelectorItem = props => (
                         />
                     </MenuItem>
                 ) : null }
+                {props.onExportButtonClick ? (
+                    <MenuItem onClick={props.onExportButtonClick}>
+                        <FormattedMessage
+                            defaultMessage="export"
+                            description="Menu item to export the selected item"
+                            id="gui.spriteSelectorItem.contextMenuExport"
+                        />
+                    </MenuItem>
+                ) : null }
             </ContextMenu>
         ) : null}
     </ContextMenuTrigger>
@@ -86,6 +92,7 @@ SpriteSelectorItem.propTypes = {
     onClick: PropTypes.func,
     onDeleteButtonClick: PropTypes.func,
     onDuplicateButtonClick: PropTypes.func,
+    onExportButtonClick: PropTypes.func,
     onMouseDown: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
