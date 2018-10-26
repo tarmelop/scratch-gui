@@ -139,7 +139,7 @@ const motion = function (isStage, targetId) {
 };
 
 const looks = function (isStage, targetId) {
-    /*const hello = ScratchBlocks.ScratchMsgs.translate('LOOKS_HELLO', 'Hello!');
+    const hello = ScratchBlocks.ScratchMsgs.translate('LOOKS_HELLO', 'Hello!');
     const hmm = ScratchBlocks.ScratchMsgs.translate('LOOKS_HMM', 'Hmm...');
     return `
     <category name="%{BKY_CATEGORY_LOOKS}" id="looks" colour="#9966FF" secondaryColour="#774DCB">
@@ -264,11 +264,11 @@ const looks = function (isStage, targetId) {
         `}
         ${categorySeparator}
     </category>
-    `;*/
+    `;
 };
 
 const sound = function (isStage, targetId) {
-    /*return `
+    return `
     <category name="%{BKY_CATEGORY_SOUND}" id="sound" colour="#D65CD6" secondaryColour="#BD42BD">
         <block id="${targetId}_sound_playuntildone" type="sound_playuntildone">
             <value name="SOUND_MENU">
@@ -315,9 +315,8 @@ const sound = function (isStage, targetId) {
         <block id="volume" type="sound_volume"/>
         ${categorySeparator}
     </category>
-    `;*/
+    `;
 };
-
 
 const events = function (isStage) {
     return `
@@ -384,6 +383,22 @@ const control = function (isStage) {
         <block id="repeat_until" type="control_repeat_until"/>
         ${blockSeparator}
         <block type="control_stop"/>
+        ${blockSeparator}
+        ${isStage ? `
+            <block type="control_create_clone_of">
+                <value name="CLONE_OPTION">
+                    <shadow type="control_create_clone_of_menu"/>
+                </value>
+            </block>
+        ` : `
+            <block type="control_start_as_clone"/>
+            <block type="control_create_clone_of">
+                <value name="CLONE_OPTION">
+                    <shadow type="control_create_clone_of_menu"/>
+                </value>
+            </block>
+            <block type="control_delete_this_clone"/>
+        `}
         ${categorySeparator}
     </category>
     `;
@@ -394,6 +409,24 @@ const sensing = function (isStage) {
     return `
     <category name="%{BKY_CATEGORY_SENSING}" id="sensing" colour="#4CBFE6" secondaryColour="#2E8EB8">
         ${isStage ? '' : `
+            <block type="sensing_touchingobject">
+                <value name="TOUCHINGOBJECTMENU">
+                    <shadow type="sensing_touchingobjectmenu"/>
+                </value>
+            </block>
+            <block type="sensing_touchingcolor">
+                <value name="COLOR">
+                    <shadow type="colour_picker"/>
+                </value>
+            </block>
+            <block type="sensing_coloristouchingcolor">
+                <value name="COLOR">
+                    <shadow type="colour_picker"/>
+                </value>
+                <value name="COLOR2">
+                    <shadow type="colour_picker"/>
+                </value>
+            </block>
             <block type="sensing_distanceto">
                 <value name="DISTANCETOMENU">
                     <shadow type="sensing_distancetomenu"/>
@@ -401,6 +434,14 @@ const sensing = function (isStage) {
             </block>
             ${blockSeparator}
         `}
+        <block id="askandwait" type="sensing_askandwait">
+            <value name="QUESTION">
+                <shadow type="text">
+                    <field name="TEXT">${name}</field>
+                </shadow>
+            </value>
+        </block>
+        <block id="answer" type="sensing_answer"/>
         ${blockSeparator}
         <block type="sensing_keypressed">
             <value name="KEY_OPTION">
@@ -415,7 +456,9 @@ const sensing = function (isStage) {
             '<block type="sensing_setdragmode" id="sensing_setdragmode"></block>'+
             ${blockSeparator}
         `}
+        ${blockSeparator}
         <block id="loudness" type="sensing_loudness"/>
+        ${blockSeparator}
         <block id="timer" type="sensing_timer"/>
         <block type="sensing_resettimer"/>
         ${blockSeparator}
@@ -424,6 +467,11 @@ const sensing = function (isStage) {
                 <shadow id="sensing_of_object_menu" type="sensing_of_object_menu"/>
             </value>
         </block>
+        ${blockSeparator}
+        <block id="current" type="sensing_current"/>
+        <block type="sensing_dayssince2000"/>
+        ${blockSeparator}
+        <block type="sensing_username"/>
         ${categorySeparator}
     </category>
     `;
@@ -537,6 +585,50 @@ const operators = function () {
         <block type="operator_and"/>
         <block type="operator_or"/>
         <block type="operator_not"/>
+        ${blockSeparator}
+        <block type="operator_join">
+            <value name="STRING1">
+                <shadow type="text">
+                    <field name="TEXT">${apple}</field>
+                </shadow>
+            </value>
+            <value name="STRING2">
+                <shadow type="text">
+                    <field name="TEXT">${banana}</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="operator_letter_of">
+            <value name="LETTER">
+                <shadow type="math_whole_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="STRING">
+                <shadow type="text">
+                    <field name="TEXT">${apple}</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="operator_length">
+            <value name="STRING">
+                <shadow type="text">
+                    <field name="TEXT">${apple}</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="operator_contains" id="operator_contains">
+          <value name="STRING1">
+            <shadow type="text">
+              <field name="TEXT">${apple}</field>
+            </shadow>
+          </value>
+          <value name="STRING2">
+            <shadow type="text">
+              <field name="TEXT">${letter}</field>
+            </shadow>
+          </value>
+        </block>
         ${blockSeparator}
         <block type="operator_mod">
             <value name="NUM1">
