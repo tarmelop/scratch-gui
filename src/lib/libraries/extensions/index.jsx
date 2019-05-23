@@ -71,12 +71,27 @@ export default [
         featured: true
     },
     {
-        name: 'Synth',
+        name: (
+            <FormattedMessage
+                defaultMessage="Synth"
+                description="Name for the 'Synth' extension"
+                id="gui.extension.synth.name"
+            />
+        ),
         extensionId: 'synth',
-        iconURL: synthImage,
-        description: 'Synthesize sound effects and music.',
+        iconURL: synthIconURL,
+        insetIconURL: synthInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Synthesize sound effects and music."
+                description="Description for the 'Synth' extension"
+                id="gui.extension.synth.description"
+            />
+        ),
         featured: true
     },
+
+
     {
         name: (
             <FormattedMessage
