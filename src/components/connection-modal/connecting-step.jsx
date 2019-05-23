@@ -1,6 +1,7 @@
 import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 
 import Box from '../box/box.jsx';
 import Dots from './dots.jsx';
@@ -17,7 +18,7 @@ const ConnectingStep = props => (
                 <div className={styles.peripheralActivity}>
                     <img
                         className={styles.peripheralActivityIcon}
-                        src={props.peripheralImage}
+                        src={props.connectionIconURL}
                     />
                     <img
                         className={styles.bluetoothConnectingIcon}
@@ -27,14 +28,15 @@ const ConnectingStep = props => (
             </Box>
         </Box>
         <Box className={styles.bottomArea}>
-            <Box className={styles.instructions}>
+            <Box className={classNames(styles.bottomAreaItem, styles.instructions)}>
                 {props.connectingMessage}
             </Box>
             <Dots
+                className={styles.bottomAreaItem}
                 counter={1}
                 total={3}
             />
-            <div className={styles.segmentedButton}>
+            <div className={classNames(styles.bottomAreaItem, styles.segmentedButton)}>
                 <button
                     disabled
                     className={styles.connectionButton}
@@ -61,8 +63,8 @@ const ConnectingStep = props => (
 
 ConnectingStep.propTypes = {
     connectingMessage: PropTypes.node.isRequired,
-    onDisconnect: PropTypes.func,
-    peripheralImage: PropTypes.string.isRequired
+    connectionIconURL: PropTypes.string.isRequired,
+    onDisconnect: PropTypes.func
 };
 
 export default ConnectingStep;

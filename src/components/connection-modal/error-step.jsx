@@ -17,13 +17,13 @@ const ErrorStep = props => (
                 <div className={styles.peripheralActivity}>
                     <img
                         className={styles.peripheralActivityIcon}
-                        src={props.peripheralImage}
+                        src={props.connectionIconURL}
                     />
                 </div>
             </Box>
         </Box>
         <Box className={styles.bottomArea}>
-            <div className={styles.instructions}>
+            <div className={classNames(styles.bottomAreaItem, styles.instructions)}>
                 <FormattedMessage
                     defaultMessage="Oops, looks like something went wrong."
                     description="The device connection process has encountered an error."
@@ -32,9 +32,10 @@ const ErrorStep = props => (
             </div>
             <Dots
                 error
+                className={styles.bottomAreaItem}
                 total={3}
             />
-            <Box className={styles.buttonRow}>
+            <Box className={classNames(styles.bottomAreaItem, styles.buttonRow)}>
                 <button
                     className={styles.connectionButton}
                     onClick={props.onScanning}
@@ -69,9 +70,9 @@ const ErrorStep = props => (
 );
 
 ErrorStep.propTypes = {
+    connectionIconURL: PropTypes.string.isRequired,
     onHelp: PropTypes.func,
-    onScanning: PropTypes.func,
-    peripheralImage: PropTypes.string.isRequired
+    onScanning: PropTypes.func
 };
 
 export default ErrorStep;
