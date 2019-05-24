@@ -46,9 +46,6 @@ import gdxforInsetIconURL from './gdxfor/gdxfor-small.svg';
 import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
-import synthIconURL from './synth/synth.png';
-import synthInsetIconURL from './synth/synth-small.svg';
-
 import lightplayIconURL from './lightplay/lightplay.png';
 import lightplayInsetIconURL from './lightplay/lightplay-small.svg';
 
@@ -74,17 +71,23 @@ export default [
         featured: true
     },
     {
-        name: 'Synth',
-        extensionId: 'synth',
-        iconURL: synthImage,
-        description: 'Synthesize sound effects and music.',
-        featured: true
-    },
-    {
-        name: 'Lightplay',
+        name: (
+            <FormattedMessage
+                defaultMessage="Lightplay"
+                description="Name for the 'Lightplay' extension"
+                id="gui.extension.lightplay.name"
+            />
+        ),
         extensionId: 'lightplay',
-        iconURL: lightplayImage,
-        description: 'Play with lights.',
+        iconURL: lightplayIconURL,
+        insetIconURL: lightplayInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Play with lightplay."
+                description="Description for the 'Lightplay' extension"
+                id="gui.extension.lightplay.description"
+            />
+        ),
         featured: true
     },
     {
