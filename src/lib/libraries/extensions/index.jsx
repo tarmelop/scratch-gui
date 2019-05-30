@@ -47,7 +47,8 @@ import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
 import lightplayIconURL from './lightplay/lightplay.png';
-import lightplayInsetIconURL from './lightplay/lightplay-small.svg';
+import lightplayInsetIconURL from './lightplay/lightplay-icon.png';
+import lightPlayConnectionIconURL from './lightplay/lightplay-icon.png';
 
 export default [
     {
@@ -88,7 +89,12 @@ export default [
                 id="gui.extension.lightplay.description"
             />
         ),
-        featured: true
+        featured: true, 
+        bluetoothRequired: true,
+        launchPeripheralConnectionFlow: true,
+        useAutoScan: false, 
+        connectionIconURL: lightPlayConnectionIconURL
+
     },
     {
         name: (
