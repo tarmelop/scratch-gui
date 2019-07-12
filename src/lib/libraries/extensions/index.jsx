@@ -72,13 +72,7 @@ export default [
         featured: true
     },
     {
-        name: (
-            <FormattedMessage
-                defaultMessage="Lightplay"
-                description="Name for the 'Lightplay' extension"
-                id="gui.extension.lightplay.name"
-            />
-        ),
+        name: 'Lightplay',
         extensionId: 'lightplay',
         iconURL: lightplayIconURL,
         insetIconURL: lightplayInsetIconURL,
