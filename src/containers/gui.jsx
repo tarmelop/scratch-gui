@@ -95,6 +95,10 @@ class GUI extends React.Component {
         this.isAfterGUI = this.isAfterGUI || (
             fontsLoaded && !fetchingProject && !isLoading
         );
+
+        // Auto-load lightplay extension
+        //this.props.vm.extensionManager.loadExtensionURL('lightplay');
+
     }
     setReduxTitle (newTitle) {
         if (newTitle === null || typeof newTitle === 'undefined') {
