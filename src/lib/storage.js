@@ -18,6 +18,10 @@ class Storage extends ScratchStorage {
             this.getProjectCreateConfig.bind(this),
             this.getProjectUpdateConfig.bind(this)
         );
+        /*this.addWebStore(
+            [this.AssetType.ImageBitmap],
+            asset => window.location + `static/assets/${asset.assetId}.${asset.dataFormat}`
+        );*/
         this.addWebStore(
             [this.AssetType.ImageVector, this.AssetType.ImageBitmap, this.AssetType.Sound],
             this.getAssetGetConfig.bind(this),
@@ -31,6 +35,7 @@ class Storage extends ScratchStorage {
             [this.AssetType.Sound],
             asset => `static/extension-assets/scratch3_music/${asset.assetId}.${asset.dataFormat}`
         );
+        
     }
     setProjectHost (projectHost) {
         this.projectHost = projectHost;
@@ -54,6 +59,10 @@ class Storage extends ScratchStorage {
         this.assetHost = assetHost;
     }
     getAssetGetConfig (asset) {
+        // hack to parse static assets
+        if (asset.assetId.startsWith('x')){
+            return window.location + `static/assets/${asset.assetId}.${asset.dataFormat}`;
+        }
         return `${this.assetHost}/internalapi/asset/${asset.assetId}.${asset.dataFormat}/get/`;
     }
     getAssetCreateConfig (asset) {
