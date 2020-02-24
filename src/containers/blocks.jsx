@@ -17,6 +17,7 @@ import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 import {STAGE_DISPLAY_SIZES} from '../lib/layout-constants';
 import DropAreaHOC from '../lib/drop-area-hoc.jsx';
 import DragConstants from '../lib/drag-constants';
+import defineDynamicBlock from '../lib/define-dynamic-block';
 
 import {connect} from 'react-redux';
 import {updateToolbox} from '../reducers/toolbox';
@@ -29,10 +30,6 @@ import {
     activateTab,
     SOUNDS_TAB_INDEX
 } from '../reducers/editor-tab';
-
-const UNINITIALIZED_TOOLBOX_XML = `<xml style="display: none">
-    <category name="%{BKY_CATEGORY_MOTION}" id="motion" colour="#4C97FF" secondaryColour="#3373CC"></category>
-</xml>`;
 
 const addFunctionListener = (object, property, callback) => {
     const oldFn = object[property];
@@ -87,19 +84,16 @@ class Blocks extends React.Component {
         };
         this.onTargetsUpdate = debounce(this.onTargetsUpdate, 100);
         this.toolboxUpdateQueue = [];
-        this.initializedWorkspace = false;
     }
     componentDidMount () {
         this.ScratchBlocks.FieldColourSlider.activateEyedropper_ = this.props.onActivateColorPicker;
         this.ScratchBlocks.Procedures.externalProcedureDefCallback = this.props.onActivateCustomProcedures;
         this.ScratchBlocks.ScratchMsgs.setLocale(this.props.locale);
 
-        const toolboxXML = UNINITIALIZED_TOOLBOX_XML;
-
         const workspaceConfig = defaultsDeep({},
             Blocks.defaultOptions,
             this.props.options,
-            {rtl: this.props.isRtl, toolbox: toolboxXML}
+            {rtl: this.props.isRtl, toolbox: this.props.toolboxXML}
         );
         this.workspace = this.ScratchBlocks.inject(this.blocks, workspaceConfig);
 
@@ -121,7 +115,7 @@ class Blocks extends React.Component {
         // Store the xml of the toolbox that is actually rendered.
         // This is used in componentDidUpdate instead of prevProps, because
         // the xml can change while e.g. on the costumes tab.
-        this._renderedToolboxXML = toolboxXML;
+        this._renderedToolboxXML = this.props.toolboxXML;
 
         // we actually never want the workspace to enable "refresh toolbox" - this basically re-renders the
         // entire toolbox every time we reset the workspace.  We call updateToolbox as a part of
@@ -195,19 +189,13 @@ class Blocks extends React.Component {
     componentWillUnmount () {
         this.detachVM();
         this.workspace.dispose();
-        if (this.toolboxUpdateTimeout) this.toolboxUpdateTimeout.cancel();
+        clearTimeout(this.toolboxUpdateTimeout);
     }
     requestToolboxUpdate () {
-        if (this.toolboxUpdateTimeout) this.toolboxUpdateTimeout.cancel();
-        let running = true;
-        this.toolboxUpdateTimeout = Promise.resolve().then(() => {
-            if (running) {
-                this.updateToolbox();
-            }
-        });
-        this.toolboxUpdateTimeout.cancel = () => {
-            running = false;
-        };
+        clearTimeout(this.toolboxUpdateTimeout);
+        this.toolboxUpdateTimeout = setTimeout(() => {
+            this.updateToolbox();
+        }, 0);
     }
     setLocale () {
         this.ScratchBlocks.ScratchMsgs.setLocale(this.props.locale);
@@ -227,15 +215,8 @@ class Blocks extends React.Component {
 
         const categoryId = this.workspace.toolbox_.getSelectedCategoryId();
         const offset = this.workspace.toolbox_.getCategoryScrollOffset();
-
-        let toolboxXML = this.props.toolboxXML;
-        if (!this.initializedWorkspace) {
-            toolboxXML = UNINITIALIZED_TOOLBOX_XML;
-        }
-        if (this._renderedToolboxXML !== toolboxXML) {
-            this.workspace.updateToolbox(toolboxXML);
-            this._renderedToolboxXML = toolboxXML;
-        }
+        this.workspace.updateToolbox(this.props.toolboxXML);
+        this._renderedToolboxXML = this.props.toolboxXML;
 
         // In order to catch any changes that mutate the toolbox during "normal runtime"
         // (variable changes/etc), re-enable toolbox refresh.
@@ -359,9 +340,9 @@ class Blocks extends React.Component {
             const targetSounds = target.getSounds();
             const dynamicBlocksXML = this.props.vm.runtime.getBlocksXML();
             return makeToolboxXML(target.isStage, target.id, dynamicBlocksXML,
-                targetCostumes[0].name,
-                stageCostumes[0].name,
-                targetSounds.length > 0 ? targetSounds[0].name : ''
+                targetCostumes[targetCostumes.length - 1].name,
+                stageCostumes[stageCostumes.length - 1].name,
+                targetSounds.length > 0 ? targetSounds[targetSounds.length - 1].name : ''
             );
         } catch {
             return null;
@@ -371,7 +352,6 @@ class Blocks extends React.Component {
         // When we change sprites, update the toolbox to have the new sprite's blocks
         const toolboxXML = this.getToolboxXML();
         if (toolboxXML) {
-            this.initializedWorkspace = true;
             this.props.updateToolboxState(toolboxXML);
         }
 
@@ -414,20 +394,50 @@ class Blocks extends React.Component {
         // workspace to be 'undone' here.
         this.workspace.clearUndo();
     }
-    handleExtensionAdded (blocksInfo) {
-        // select JSON from each block info object then reject the pseudo-blocks which don't have JSON, like separators
-        // this actually defines blocks and MUST run regardless of the UI state
-        this.ScratchBlocks.defineBlocksWithJsonArray(blocksInfo.map(blockInfo => blockInfo.json).filter(x => x));
+    handleExtensionAdded (categoryInfo) {
+        const defineBlocks = blockInfoArray => {
+            if (blockInfoArray && blockInfoArray.length > 0) {
+                const staticBlocksJson = [];
+                const dynamicBlocksInfo = [];
+                blockInfoArray.forEach(blockInfo => {
+                    if (blockInfo.info && blockInfo.info.isDynamic) {
+                        dynamicBlocksInfo.push(blockInfo);
+                    } else if (blockInfo.json) {
+                        staticBlocksJson.push(blockInfo.json);
+                    }
+                    // otherwise it's a non-block entry such as '---'
+                });
 
-        // Update the toolbox with new blocks
+                this.ScratchBlocks.defineBlocksWithJsonArray(staticBlocksJson);
+                dynamicBlocksInfo.forEach(blockInfo => {
+                    // This is creating the block factory / constructor -- NOT a specific instance of the block.
+                    // The factory should only know static info about the block: the category info and the opcode.
+                    // Anything else will be picked up from the XML attached to the block instance.
+                    const extendedOpcode = `${categoryInfo.id}_${blockInfo.info.opcode}`;
+                    const blockDefinition =
+                        defineDynamicBlock(this.ScratchBlocks, categoryInfo, blockInfo, extendedOpcode);
+                    this.ScratchBlocks.Blocks[extendedOpcode] = blockDefinition;
+                });
+            }
+        };
+
+        // scratch-blocks implements a menu or custom field as a special kind of block ("shadow" block)
+        // these actually define blocks and MUST run regardless of the UI state
+        defineBlocks(
+            Object.getOwnPropertyNames(categoryInfo.customFieldTypes)
+                .map(fieldTypeName => categoryInfo.customFieldTypes[fieldTypeName].scratchBlocksDefinition));
+        defineBlocks(categoryInfo.menus);
+        defineBlocks(categoryInfo.blocks);
+
+        // Update the toolbox with new blocks if possible
         const toolboxXML = this.getToolboxXML();
         if (toolboxXML) {
             this.props.updateToolboxState(toolboxXML);
         }
     }
-    handleBlocksInfoUpdate (blocksInfo) {
+    handleBlocksInfoUpdate (categoryInfo) {
         // @todo Later we should replace this to avoid all the warnings from redefining blocks.
-        this.handleExtensionAdded(blocksInfo);
+        this.handleExtensionAdded(categoryInfo);
     }
     handleCategorySelected (categoryId) {
         const extension = extensionData.find(ext => ext.extensionId === categoryId);
